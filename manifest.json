@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+  "name": "Web Security Final Project",
+  "version": "0.1",
+
+  "permissions": ["tabs", "activeTab", "<all_urls>"],
+
+  "browser_action": {
+    "default_icon": {
+      "32": "img/green.png"
+    }
+  },
+
+  "background": {
+    "persistent": true,
+    "scripts": ["resemble.js", "background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "author": "Sung Woo Park, Seungjae Paik, Jeongeun Lee, Pratyush Trivedi"
+}
