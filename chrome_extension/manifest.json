@@ -17,5 +17,12 @@
     "scripts": ["background.js"]
   },
 
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js", "jquery-3.3.1.min.js"]
+    }
+  ],
+
   "author": "Sung Woo Park, Seungjae Paik, Jeongeun Lee, Pratyush Trivedi"
 }
