@@ -13,8 +13,13 @@
             </style>
     </head>
 
+
   <body class="text-center">
+
+  	{% autoescape false %}
     <h1 class="h3 mb-3 font-weight-normal">Thank You {{name}} ! </h1>
+    {% endautoescape %}
+    
     <h4>Response has been Submitted</h4>
   </body>
 
