@@ -11,7 +11,13 @@ window.alert = function(s, injected) {
 };
 
 function inject() {
-  $(':input').each(function(item) {
+  const inputs = $(':input');
+  if (inputs && inputs.length == 0) {
+    originalAlert('No valid input boxes found.');
+    return;
+  }
+
+  inputs.each(function() {
     console.log(this);
     $(this).val('<script>alert("vulnerable");</script>');
   });
@@ -20,7 +26,13 @@ function inject() {
 }
 
 function detect() {
-  $(':input').each(function(item) {
+  const inputs = $(':input');
+  if (inputs && inputs.length == 0) {
+    originalAlert('No valid input boxes found.');
+    return;
+  }
+
+  inputs.each(function() {
     console.log(this);
     $(this).val(`{{7 * '7'}}`);
   });
@@ -47,13 +59,13 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     case 'ALERT':
       alert(message.data, true);
       break;
-    case 'DETECT':
+    case 'CONTENT_DETECT':
       detect();
       break;
-    case 'INJECT':
+    case 'CONTENT_INJECT':
       inject();
       break;
-    case 'ANALYZE':
+    case 'CONTENT_ANALYZE':
       analyze();
       break;
   }

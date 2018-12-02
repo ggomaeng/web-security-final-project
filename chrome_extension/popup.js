@@ -1,10 +1,12 @@
 var background = chrome.extension.getBackgroundPage();
 sendToBackground({ type: 'POPUP' });
 
-document.getElementById('content-button').addEventListener('click', detect);
-
 function detect() {
   sendToBackground({ type: 'DETECT' });
+}
+
+function inject() {
+  sendToBackground({ type: 'INJECT' });
 }
 
 function showLoading() {
@@ -45,13 +47,30 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   }
 
   switch (lastAction) {
+    case 'DETECT':
+      $('#content-button').on('click', function() {
+        detect();
+      });
+      break;
+
     case 'DETECTED':
-      console.log('in last action');
       $('#content-title').text(
         'Congratulations! ' + templateEngine + ' detected.'
       );
       $('#content-img').attr('src', './img/jinja.png');
       $('#content-button').text('Next');
+      $('#content-button').on('click', function() {
+        sendToBackground({ type: 'INJECT' });
+      });
+      break;
+
+    case 'INJECT':
+      $('#content-title').text('Step 2. Inject Scripts');
+      $('#content-img').attr('src', './img/icons8-syringe.png');
+      $('#content-button').text('Inject');
+      $('#content-button').on('click', function() {
+        inject();
+      });
       break;
   }
 });

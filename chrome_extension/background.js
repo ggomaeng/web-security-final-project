@@ -1,4 +1,4 @@
-var lastAction = '';
+var lastAction = 'DETECT';
 var templateEngine = '';
 var isLoading = false;
 
@@ -22,23 +22,23 @@ function reloadPopup() {
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   console.log('message', message);
+  isLoading = false;
   switch (message.type) {
     case 'DETECT':
       isLoading = true;
       lastAction = message.type;
-      sendMessageToContent({ type: 'DETECT' });
-      reloadPopup();
+      sendMessageToContent({ type: 'CONTENT_DETECT' });
       break;
     case 'DETECTED':
-      isLoading = false;
       lastAction = message.type;
       templateEngine = message.data;
-      reloadPopup();
       break;
-    case 'POPUP':
-      reloadPopup();
+
+    case 'INJECT':
+      lastAction = message.type;
       break;
   }
+  reloadPopup();
 });
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
@@ -46,7 +46,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     console.log('TAB_LOADED', tabId, tab, changeInfo);
     switch (lastAction) {
       case 'DETECT':
-        sendMessageToContent({ type: 'ANALYZE' });
+        sendMessageToContent({ type: 'CONTENT_ANALYZE' });
     }
   }
 });
