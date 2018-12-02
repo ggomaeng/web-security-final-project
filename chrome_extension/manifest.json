@@ -6,6 +6,7 @@
   "permissions": ["tabs", "activeTab", "<all_urls>"],
 
   "browser_action": {
+    "default_popup": "popup.html",
     "default_icon": {
       "32": "img/green.png"
     }
@@ -13,13 +14,8 @@
 
   "background": {
     "persistent": true,
-    "scripts": ["resemble.js", "background.js"]
+    "scripts": ["background.js"]
   },
-  "content_scripts": [
-    {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["content.js"]
-    }
-  ],
+
   "author": "Sung Woo Park, Seungjae Paik, Jeongeun Lee, Pratyush Trivedi"
 }
