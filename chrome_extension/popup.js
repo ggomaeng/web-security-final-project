@@ -9,6 +9,10 @@ function inject() {
   sendToBackground({ type: 'INJECT' });
 }
 
+function reset() {
+  sendToBackground({ type: 'RESET' });
+}
+
 function showLoading() {
   $('#container').hide();
   $('#loading').css({
@@ -48,6 +52,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
   switch (lastAction) {
     case 'DETECT':
+      $('#content-button').off();
       $('#content-button').on('click', function() {
         detect();
       });
@@ -59,8 +64,17 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
       );
       $('#content-img').attr('src', './img/jinja.png');
       $('#content-button').text('Next');
+
+      $('#content-button').off();
       $('#content-button').on('click', function() {
-        sendToBackground({ type: 'INJECT' });
+        $('#content-title').text('Step 2. Inject Scripts');
+        $('#content-img').attr('src', './img/icons8-syringe.png');
+        $('#content-button').text('Inject');
+
+        $('#content-button').off();
+        $('#content-button').on('click', function() {
+          inject();
+        });
       });
       break;
 
@@ -68,8 +82,25 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
       $('#content-title').text('Step 2. Inject Scripts');
       $('#content-img').attr('src', './img/icons8-syringe.png');
       $('#content-button').text('Inject');
+
+      $('#content-button').off();
       $('#content-button').on('click', function() {
         inject();
+      });
+      break;
+
+    case 'INJECTED':
+      $('#content-title').text('THIS SITE IS VULNERABLE TO INJECTION');
+      $('#content-img').attr('src', './img/icons8-self_destruct_button.png');
+      $('#content-button').text('DONE');
+
+      $('#content-button').off();
+      $('#content-button').on('click', function() {
+        $('#content-title').text('Step 1. Detect Framework');
+        $('#content-img').attr('src', './img/icons8-detective.png');
+        $('#content-button').text('Detect');
+        $('#content-button').off();
+        reset();
       });
       break;
   }

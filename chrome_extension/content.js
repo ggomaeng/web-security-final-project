@@ -1,9 +1,7 @@
 /* Override window.alert */
 var originalAlert = window.alert;
-window.alert = function(s, injected) {
-  if (injected) {
-    //vulnerability exists
-  }
+window.alert = function(s) {
+  sendMessageToBackground({ type: 'INJECTED' });
 
   setTimeout(function() {
     originalAlert('Congratulations, you executed an alert');
@@ -13,13 +11,17 @@ window.alert = function(s, injected) {
 function inject() {
   const inputs = $(':input');
   if (inputs && inputs.length == 0) {
+    console.log('NO INPUT BOXES');
     originalAlert('No valid input boxes found.');
+    sendMessageToBackground({ type: 'ERROR' });
     return;
   }
 
   inputs.each(function() {
     console.log(this);
-    $(this).val('<script>alert("vulnerable");</script>');
+    $(this).val(
+      '<script>alert("This page is vulnerable to injection.")</script>'
+    );
   });
 
   $('form')[0].submit();
@@ -29,6 +31,7 @@ function detect() {
   const inputs = $(':input');
   if (inputs && inputs.length == 0) {
     originalAlert('No valid input boxes found.');
+    sendMessageToBackground({ type: 'ERROR' });
     return;
   }
 

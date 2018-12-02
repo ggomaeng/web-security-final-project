@@ -36,6 +36,22 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
     case 'INJECT':
       lastAction = message.type;
+      sendMessageToContent({ type: 'CONTENT_INJECT' });
+      break;
+
+    case 'INJECTED':
+      lastAction = message.type;
+      isLoading = false;
+      break;
+
+    case 'ERROR':
+      isLoading = false;
+      break;
+
+    case 'RESET':
+      lastAction = 'DETECT';
+      templateEngine = '';
+      isLoading = false;
       break;
   }
   reloadPopup();
@@ -46,7 +62,10 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     console.log('TAB_LOADED', tabId, tab, changeInfo);
     switch (lastAction) {
       case 'DETECT':
-        sendMessageToContent({ type: 'CONTENT_ANALYZE' });
+        if (lastAction == 'DETECT') {
+          sendMessageToContent({ type: 'CONTENT_ANALYZE' });
+        }
+        break;
     }
   }
 });
