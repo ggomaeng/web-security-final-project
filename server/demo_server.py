@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template_string, render_template, Markup
 
 app = Flask(__name__, template_folder='template')
-
+app.config.from_object('config.BaseConfig')
 
 @app.route('/', methods=['GET'])
 def welcome(): 
