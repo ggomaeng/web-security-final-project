@@ -5,13 +5,12 @@ app.config.from_object('config.BaseConfig')
 
 @app.route('/', methods=['GET'])
 def welcome(): 
-	template = "home.html"
 	if request.args.get('search'):
 		search = request.args.get('search')
 		template = """
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<div class="row" align="center">
-			<img src="/static/sherlock.png" style="margin-top: 100px">
+			<img src="/static/Moriaty.png" style="margin-top: 100px">
 		</div>
 	    <div class="row" align="center">
 	        <h3>Ooops! No results on %s </h3>
@@ -20,7 +19,7 @@ def welcome():
 	""" % (search)
 		return render_template_string(template)
 		# return render_template_string(response_html)
-	return render_template(template)
+	return render_template("home.html")
 
 
 @app.route('/contact-info', methods=['GET', 'POST'])
