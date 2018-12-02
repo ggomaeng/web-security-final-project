@@ -14,7 +14,7 @@ def welcome():
 			<img src="/static/sherlock.png" style="margin-top: 100px">
 		</div>
 	    <div class="row" align="center">
-	        <h1>Sorry No results on %s </h1>
+	        <h3>Ooops! No results on %s </h3>
 	        <h3>Please leave us feedback <a href="/contact-info">Click here!</a></h3>
 	    </div>
 	""" % (search)
