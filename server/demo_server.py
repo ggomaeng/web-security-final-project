@@ -2,12 +2,24 @@ from flask import Flask, request, render_template_string, render_template, Marku
 
 app = Flask(__name__, template_folder='template')
 
+
 @app.route('/', methods=['GET'])
 def welcome(): 
 	template = "home.html"
 	if request.args.get('search'):
 		search = request.args.get('search')
-		return render_template_string(''' <h1>Sorry No results on %s.  </h1>''' % (search) )
+		template = """
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<div class="row" align="center">
+			<img src="/static/sherlock.png" style="margin-top: 100px">
+		</div>
+	    <div class="row" align="center">
+	        <h1>Sorry No results on %s </h1>
+	        <h3>Please leave us feedback <a href="/contact-info">Click here!</a></h3>
+	    </div>
+	""" % (search)
+		return render_template_string(template)
+		# return render_template_string(response_html)
 	return render_template(template)
 
 
@@ -16,6 +28,7 @@ def contact_info():
 	if request.method == "GET": 
 		template = "contact.html"
 		return render_template(template)
+
 
 @app.route('/contact_submit', methods=['GET', 'POST'])
 def contact_submit(): 
