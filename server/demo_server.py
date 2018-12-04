@@ -38,6 +38,11 @@ def contact_submit():
 
 	return render_template(template)
 
+@app.after_request
+def add_header(response):
+	response.headers['Cache-Control'] = 'no-store'
+	return response
+
 
 ####
 # Private function if the user has local files.
